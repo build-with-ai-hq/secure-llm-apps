@@ -1,3 +1,5 @@
+<img src="assets/banner.png" alt="secure-llm-apps: Audit and harden LLM apps against the OWASP LLM Top 10." width="100%">
+
 # secure-llm-apps
 
 [![skills.sh](https://skills.sh/b/build-with-ai-hq/secure-llm-apps)](https://skills.sh/build-with-ai-hq/secure-llm-apps)
