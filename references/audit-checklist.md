@@ -85,57 +85,60 @@ g "\"is_enabled\"|enforce_auth_on_inference|allow_direct_keys|allowed_origins|di
 g "0\.0\.0\.0:8080|ports:\s*-\s*\"?8080"                      # exposed publicly?
 ```
 
-## Checklist (mapped to OWASP Top 10 for LLM Applications)
+## Checklist (mapped to the OWASP Top 10 for LLM Applications, 2026 edition)
 
-### LLM01 Prompt injection
+Numbering follows the 2026 edition (https://genai.owasp.org/resource/owasp-genai-llm-top-10-2026/). Excessive agency, unbounded consumption and misinformation moved up; system prompt leakage is now hidden context exposure, which treats anything placed in the model's context as readable by an attacker.
+
+### LLM01:2026 Prompt injection
 - [ ] All untrusted content (RAG, files, email, web, tool results) is delimited and marked as data.
 - [ ] Session is tainted when untrusted content enters; write/destructive tools then need approval.
 - [ ] High-risk read-then-act flows use the quarantine pattern or schema-only handoff.
 - [ ] Injection payloads from `prompt-injection.md` run as CI regression tests.
 
-### LLM02 Sensitive information disclosure
+### LLM02:2026 Sensitive information disclosure
 - [ ] Only needed fields are sent; PII redacted or pseudonymized locally (Presidio) before the call.
 - [ ] Pasted secrets are detected and masked; user told to rotate.
 - [ ] Retrieval filtered by tenant and permissions in the query.
 - [ ] Provider retention/training settings confirmed for the account.
 
-### LLM03 Supply chain
-- [ ] MCP servers, model files, and SDKs pinned and from trusted sources; tool descriptions reviewed.
-- [ ] Gateway image/version pinned.
-
-### LLM04 Data and model poisoning
-- [ ] Who can write to the RAG corpus or fine-tuning data is controlled and audited.
-- [ ] User-submitted content is not indexed into shared corpora without review.
-
-### LLM05 Improper output handling
-- [ ] Model output parsed into pydantic/zod schemas with enums, patterns and bounds; invalid output fails closed.
-- [ ] No model output in SQL strings, shell strings, `eval`, or raw HTML.
-- [ ] Markdown rendered without raw HTML, sanitized, link/image hosts allowlisted.
-- [ ] URLs from the model are host-allowlisted and SSRF-protected.
-
-### LLM06 Excessive agency
+### LLM03:2026 Excessive agency
 - [ ] Each agent has the minimal tool set; read and write tools separated.
 - [ ] Identity and tenant arguments injected from the session, not the model.
 - [ ] Destructive tools require human approval showing exact arguments.
 - [ ] Step, tool-call and time limits on agent loops.
 - [ ] MCP tools allowlisted per agent key (e.g. Bifrost `mcp_configs` / `tools_to_execute`); auto-execution limited to read-only tools.
 
-### LLM07 System prompt leakage
-- [ ] System prompt contains no secrets, credentials, internal URLs or authorization rules.
-- [ ] Canary string monitored in outputs.
+### LLM04:2026 Supply chain
+- [ ] MCP servers, model files, and SDKs pinned and from trusted sources; tool descriptions reviewed.
+- [ ] Gateway image/version pinned.
 
-### LLM08 Vector and embedding weaknesses
-- [ ] Per-tenant isolation in the vector store enforced in code.
-- [ ] Caches (exact and semantic) keyed by tenant/user.
+### LLM05:2026 Data and model poisoning
+- [ ] Who can write to the RAG corpus or fine-tuning data is controlled and audited.
+- [ ] User-submitted content is not indexed into shared corpora without review.
 
-### LLM09 Misinformation
-- [ ] High-stakes outputs cite sources or are reviewed by a human; the UI says the answer is generated.
-
-### LLM10 Unbounded consumption
+### LLM06:2026 Unbounded consumption
 - [ ] All LLM endpoints authenticated.
 - [ ] Per-user and per-tenant request and token limits, plus a global ceiling.
 - [ ] Input size, `max_tokens`, retrieved chunk count and timeouts capped.
 - [ ] Budgets with alerts (e.g. per-virtual-key `budgets` and `rate_limit` in Bifrost).
+
+### LLM07:2026 Misinformation
+- [ ] High-stakes outputs cite sources or are reviewed by a human; the UI says the answer is generated.
+
+### LLM08:2026 Hidden context exposure (2025: System prompt leakage)
+- [ ] System prompt contains no secrets, credentials, internal URLs or authorization rules.
+- [ ] Canary string monitored in outputs.
+- [ ] Nothing in the context window (system prompt, retrieved documents, tool results, memory) is something the user is not allowed to see.
+
+### LLM09:2026 Vector and embedding weaknesses
+- [ ] Per-tenant isolation in the vector store enforced in code.
+- [ ] Caches (exact and semantic) keyed by tenant/user.
+
+### LLM10:2026 Improper output handling
+- [ ] Model output parsed into pydantic/zod schemas with enums, patterns and bounds; invalid output fails closed.
+- [ ] No model output in SQL strings, shell strings, `eval`, or raw HTML.
+- [ ] Markdown rendered without raw HTML, sanitized, link/image hosts allowlisted.
+- [ ] URLs from the model are host-allowlisted and SSRF-protected.
 
 ### Keys and infrastructure
 - [ ] No provider key in any client bundle, mobile binary, repo or image layer.

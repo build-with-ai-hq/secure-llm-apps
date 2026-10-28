@@ -123,7 +123,7 @@ safe_html = nh3.clean(markdown_to_html(model_output),
                       attribute_filter=filter_url)
 ```
 
-## System prompt leakage
+## System prompt leakage (OWASP 2026: hidden context exposure)
 
 Assume the system prompt will be extracted. Keep it free of secrets, credentials, internal hostnames, other customers' data, and authorization logic. To detect leakage, embed a random canary string and alert if it appears in any output:
 
