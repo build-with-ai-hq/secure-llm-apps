@@ -11,9 +11,9 @@ Every prompt is a data transfer to a third party. Decide what may leave, strip t
 | Does the answer need to reference the entity? | If yes: reversible pseudonymization. If no: irreversible redaction. |
 | Who can read stored prompts/completions? | Should be a small, audited group with short retention. |
 
-## Local redaction with Microsoft Presidio
+## Local redaction with Presidio
 
-Presidio runs on your infrastructure (library or containers), so detection happens before data leaves. It is pattern + NER based: tune entities, add custom recognizers for your own IDs, and measure recall on a sample of real data. It will miss some PII; combine with field minimization.
+[Presidio](https://github.com/data-privacy-stack/presidio) runs on your infrastructure (library or containers), so detection happens before data leaves. It is pattern + NER based: tune entities, add custom recognizers for your own IDs, and measure recall on a sample of real data. It will miss some PII; combine with field minimization.
 
 ### Python
 

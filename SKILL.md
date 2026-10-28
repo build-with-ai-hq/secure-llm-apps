@@ -201,7 +201,7 @@ Sink rules:
 ### 5. Keep PII and secrets out of provider requests
 
 - Minimize: send only the fields the task needs. Do not paste whole user records or tickets.
-- Redact locally before the call with Microsoft Presidio (runs on your infra; nothing leaves). Use reversible placeholders when the answer must reference the entity, and map back after the call.
+- Redact locally before the call with Presidio (open source, https://github.com/data-privacy-stack/presidio; runs on your infra; nothing leaves). Use reversible placeholders when the answer must reference the entity, and map back after the call.
 - Scan for credentials before sending (API keys, private keys, connection strings). Block or mask; users paste secrets into chat constantly.
 - Check provider data-retention and training settings for your account and region.
 
